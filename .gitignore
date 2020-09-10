@@ -1,0 +1,16 @@
+/node_modules
+
+/keys
+
+/build
+
+/logs
+
+.cache
+.git
+.vscode
+.DS_Store
+.env
+
+yarn-error.log*
+nohup.out
