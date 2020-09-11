@@ -1,14 +1,15 @@
+import { ProjectRepo, CounterRepo } from "../../database";
+
 export const getAllProject = async (req, res, next) => {
   try {
-    const data = [];
-    for (let i = 0; i < Math.random() * 10; ++i) {
-      data.push({
-        _id: "12312321311444",
-        title: "哈哈哈哈",
-        lastUpdate: 0,
-        lastUse: 0,
-      });
-    }
+    const projs = await ProjectRepo.query({});
+
+    const data = projs.map(({ lastUpdateTime, lastUseTime, _id, title }) => ({
+      _id,
+      title,
+      lastUpdate: lastUpdateTime,
+      lastUse: lastUseTime,
+    }));
 
     res.json({ data, type: "success" });
   } catch (error) {
