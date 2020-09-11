@@ -11,13 +11,14 @@ const projectSchema = createSchema({
     type: Number,
     required: true,
   },
-  lastUpdateTime: {
-    type: Number,
-    required: true,
-  },
+  // when create, lastUseTime === createTime
   lastUseTime: {
     type: Number,
     required: true,
+  },
+  lastUpdateTime: {
+    type: Number,
+    default: null,
   },
   appendix: {
     type: String,
@@ -40,6 +41,7 @@ const projectSchema = createSchema({
         },
       },
     ],
+    default: [],
   },
   exps: {
     // a list of `experimentSchema` in `ExperimentRepo`

@@ -17,17 +17,13 @@ const PORT = 5050;
 const app = express();
 
 app.use(jsonParser);
-
 app.use(urlencodedParser);
-
 app.use(cors);
-
 app.use(infoLogger);
 
 app.use(routes);
 
 app.use(noMatch);
-
 app.use(errorHandler);
 
 // const server = https.createServer(

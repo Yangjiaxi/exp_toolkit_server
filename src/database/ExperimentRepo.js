@@ -1,9 +1,18 @@
-import { model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { createSchema, RepositoryBase } from "./Base";
 
-// 实验记录信息
+// 实验所有记录信息
 const experimentSchema = createSchema({
-  data: {
+  projectID: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  createTime: {
+    type: Number,
+    required: true,
+  },
+  records: {
+    // a list of `recordSchema` in `RecodeRepo`
     type: [
       {
         key: {
@@ -16,6 +25,7 @@ const experimentSchema = createSchema({
         },
       },
     ],
+    default: [],
   },
 });
 

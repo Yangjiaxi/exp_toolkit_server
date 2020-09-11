@@ -1,7 +1,7 @@
 export const getExpInfo = async (req, res, next) => {
   try {
-    const { expID, projID } = req.body;
-    console.log(`get ${expID} from ${projID}`);
+    const { expID } = req.params;
+    console.log(`get ${expID}`);
 
     res.json({ data: {}, type: "success" });
   } catch (error) {
