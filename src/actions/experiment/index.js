@@ -1,3 +1,3 @@
 export { deleteExpRow } from "./delete";
 export { getExpInfo } from "./list";
-export { sumbitExpData } from "./sumbit";
+export { sumbitExpData, registerExp } from "./sumbit";

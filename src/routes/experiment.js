@@ -1,6 +1,11 @@
 import { Router } from "express";
 
-import { deleteExpRow, getExpInfo, sumbitExpData } from "../actions/experiment";
+import {
+  deleteExpRow,
+  getExpInfo,
+  sumbitExpData,
+  registerExp,
+} from "../actions/experiment";
 
 import { jwtChecker } from "../middlewares/authorization";
 
@@ -14,8 +19,11 @@ router.get("/info/:expID", getExpInfo);
 // 删除一个实验行
 router.delete("/delete/:expID", deleteExpRow);
 
-// 在运行端提交数据
-router.post("/submit", sumbitExpData);
+// 在运行端注册一个实验
+router.get("/register/:projID", registerExp);
+
+// 在运行端提交结果
+router.post("/submit/:expID", sumbitExpData);
 
 // 从回收站回复
 // router.get("/restore/:expID", restoreFromTrash);
