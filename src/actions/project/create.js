@@ -8,7 +8,7 @@ export const createProject = async (req, res, next) => {
     const fieldsFixed = fields.map(({ name, jsonKey, showInProj }) => ({
       name,
       jsonKey,
-      showInProj: showInProj === "true",
+      showInProj,
     }));
     const newProject = await ProjectRepo.createAndInsert({
       title,
