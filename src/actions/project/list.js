@@ -2,7 +2,30 @@ import { ExperimentRepo, ProjectRepo, RecordRepo } from "../../database";
 
 export const getAllProject = async (req, res, next) => {
   try {
-    const projs = await ProjectRepo.query({});
+    const projs = await ProjectRepo.query({
+      isDeleted: false,
+      isDestroyed: false,
+    });
+
+    const data = projs.map(({ lastUpdateTime, lastUseTime, _id, title }) => ({
+      _id,
+      title,
+      lastUpdate: lastUpdateTime,
+      lastUse: lastUseTime,
+    }));
+
+    res.json({ data, type: "success" });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getDeletedProject = async (req, res, next) => {
+  try {
+    const projs = await ProjectRepo.query({
+      isDeleted: true,
+      isDestroyed: false,
+    });
 
     const data = projs.map(({ lastUpdateTime, lastUseTime, _id, title }) => ({
       _id,

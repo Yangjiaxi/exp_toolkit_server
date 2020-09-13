@@ -48,6 +48,16 @@ const projectSchema = createSchema({
     type: [Schema.Types.ObjectId],
     default: [],
   },
+  // 在回收站里
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+  // 已销毁
+  isDestroyed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const ProjectModel = model("project", projectSchema);

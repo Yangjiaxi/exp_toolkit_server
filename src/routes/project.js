@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   getAllProject,
+  getDeletedProject,
   moveToTrash,
   getProjectInfo,
   createProject,
@@ -13,8 +14,11 @@ const router = Router();
 
 router.use(jwtChecker);
 
-// 展示所有项目
-router.get("/list", getAllProject);
+// 得到未删除的项目
+router.get("/list/my", getAllProject);
+
+// 查看删除的项目
+router.get("/list/deleted", getDeletedProject);
 
 // 获得一个项目的信息
 router.get("/info/:projID", getProjectInfo);
