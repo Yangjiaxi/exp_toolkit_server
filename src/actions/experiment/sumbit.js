@@ -1,11 +1,17 @@
+import { json } from "express";
+import { ExperimentRepo, RecordRepo, ProjectRepo } from "../../database";
+
 export const registerExp = async (req, res, next) => {
   try {
-    const { projID } = req.params;
-    console.log(projID);
+    const { projID: projectID } = req.params;
+    const exp = await ExperimentRepo.createAndInsert({
+      projectID,
+      createTime: new Date(),
+    });
 
-    const _id = "13212313123";
+    await ProjectRepo.pushById(projectID, { exps: exp._id });
 
-    res.json({ data: { _id }, type: "success" });
+    res.json({ data: { _id: exp._id }, type: "success" });
   } catch (error) {
     return next(error);
   }
@@ -13,7 +19,26 @@ export const registerExp = async (req, res, next) => {
 
 export const sumbitExpData = async (req, res, next) => {
   try {
-    console.log(req.body);
+    const { expID } = req.params;
+
+    const data = req.body;
+    const kvList = [];
+    for (const [key, value] of Object.entries(data)) {
+      kvList.push({
+        key,
+        value,
+      });
+    }
+
+    const time = new Date();
+
+    const record = await RecordRepo.createAndInsert({
+      createTime: time,
+      data: kvList,
+    });
+
+    await ExperimentRepo.pushById(expID, { record: record._id });
+    await ExperimentRepo.updateById(expID, { lastUpdateTime: time });
 
     res.json({ type: "success" });
   } catch (error) {

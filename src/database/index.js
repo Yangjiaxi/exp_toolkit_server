@@ -16,6 +16,7 @@ connect(
 export { ProjectRepo } from "./ProjectRepo";
 export { ExperimentRepo } from "./ExperimentRepo";
 export { CounterRepo } from "./CounterRepo";
+export { RecordRepo } from "./RecoreRepo";
 
 const defaultSchema = [{ key: "proj", value: 0 }, { key: "exp", value: 0 }];
 

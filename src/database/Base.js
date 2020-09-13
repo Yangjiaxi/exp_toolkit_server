@@ -20,9 +20,6 @@ export class RepositoryBase {
   query(condition, select = null) {
     // select is array of fields, _id is included
     if (select !== null) {
-      console.log(
-        [...select, "_id"].reduce((prev, ele) => ({ ...prev, [ele]: 1 }), {}),
-      );
       return this.model.find(
         condition,
         [...select, "_id"].reduce((prev, ele) => ({ ...prev, [ele]: 1 }), {}),

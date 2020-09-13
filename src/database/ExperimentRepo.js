@@ -11,20 +11,13 @@ const experimentSchema = createSchema({
     type: Number,
     required: true,
   },
-  records: {
+  lastUpdateTime: {
+    type: Number,
+    default: null,
+  },
+  record: {
     // a list of `recordSchema` in `RecodeRepo`
-    type: [
-      {
-        key: {
-          type: String,
-          required: true,
-        },
-        value: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    type: [Schema.Types.ObjectId],
     default: [],
   },
 });

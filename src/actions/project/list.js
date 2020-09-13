@@ -1,4 +1,4 @@
-import { ProjectRepo } from "../../database";
+import { ExperimentRepo, ProjectRepo, RecordRepo } from "../../database";
 
 export const getAllProject = async (req, res, next) => {
   try {
@@ -20,19 +20,55 @@ export const getAllProject = async (req, res, next) => {
 export const getProjectInfo = async (req, res, next) => {
   try {
     const { projID } = req.params;
-    console.log(`Get ${projID}`);
 
     const projRawData = await ProjectRepo.queryById(projID);
     const { appendix, exps, title, createTime, fields } = projRawData;
 
     const schema = [];
-    fields.forEach(({ name, showInProj }) => {
-      if (showInProj) schema.push(name);
+    const filter = [];
+    const schemaMapping = {};
+    fields.forEach(({ name, showInProj, jsonKey }) => {
+      if (showInProj) {
+        schema.push(name);
+        filter.push(jsonKey);
+        schemaMapping[jsonKey] = name;
+      }
     });
+
+    const expDataRaw = await Promise.all(
+      exps.map(async expID => ExperimentRepo.queryById(expID)),
+    );
+
+    const expData = await Promise.all(
+      expDataRaw.map(async ({ _id, record }) => {
+        if (record === undefined || record.length === 0)
+          return {
+            _id,
+            datas: [],
+          };
+
+        const latestRecordID = record[record.length - 1];
+        const {
+          data: datasRaw,
+          createTime: createTimeRecord,
+        } = await RecordRepo.queryById(latestRecordID);
+        const datas = [];
+        datasRaw.forEach(({ key, value }) => {
+          if (filter.includes(key)) {
+            datas.push({ key: schemaMapping[key], value });
+          }
+        });
+        return {
+          _id,
+          lastUpdate: createTimeRecord,
+          datas,
+        };
+      }),
+    );
 
     const data = {
       schema,
-      data: [],
+      data: expData,
       createTime,
       projectName: title,
       appendix,
