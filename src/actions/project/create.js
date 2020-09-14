@@ -23,3 +23,14 @@ export const createProject = async (req, res, next) => {
     return next(error);
   }
 };
+
+export const modifyProject = async (req, res, next) => {
+  try {
+    const { projID } = req.params;
+    const { title, appendix, fields } = req.body;
+    await ProjectRepo.updateById(projID, { title, appendix, fields });
+    res.json({ type: "success" });
+  } catch (error) {
+    return next(error);
+  }
+};

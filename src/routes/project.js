@@ -7,6 +7,7 @@ import {
   getProjectInfo,
   createProject,
   getProjectConf,
+  modifyProject,
 } from "../actions/project";
 
 import { jwtChecker } from "../middlewares/authorization";
@@ -26,6 +27,8 @@ router.get("/info/:projID", getProjectInfo);
 
 // // 新建一个项目
 router.post("/create", createProject);
+
+router.post("/modify/:projID", modifyProject);
 
 // 获得项目的配置信息
 router.get("/conf/:projID", getProjectConf);
