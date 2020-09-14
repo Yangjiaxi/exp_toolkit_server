@@ -6,6 +6,7 @@ import {
   moveToTrash,
   getProjectInfo,
   createProject,
+  getProjectConf,
 } from "../actions/project";
 
 import { jwtChecker } from "../middlewares/authorization";
@@ -25,6 +26,9 @@ router.get("/info/:projID", getProjectInfo);
 
 // // 新建一个项目
 router.post("/create", createProject);
+
+// 获得项目的配置信息
+router.get("/conf/:projID", getProjectConf);
 
 // 移动到回收站
 router.delete("/delete/:projID", moveToTrash);

@@ -102,3 +102,26 @@ export const getProjectInfo = async (req, res, next) => {
     return next(error);
   }
 };
+
+export const getProjectConf = async (req, res, next) => {
+  try {
+    const { projID } = req.params;
+
+    const projRawData = await ProjectRepo.queryById(projID);
+    const { appendix, title, fields } = projRawData;
+
+    const data = {
+      appendix,
+      title,
+      fields: fields.map(({ showInProj, name, jsonKey }) => ({
+        showInProj,
+        name,
+        jsonKey,
+      })),
+    };
+
+    res.json({ data, type: "success" });
+  } catch (error) {
+    return next(error);
+  }
+};
