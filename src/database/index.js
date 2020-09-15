@@ -17,8 +17,13 @@ export { ProjectRepo } from "./ProjectRepo";
 export { ExperimentRepo } from "./ExperimentRepo";
 export { CounterRepo } from "./CounterRepo";
 export { RecordRepo } from "./RecoreRepo";
+export { UserRepo } from "./UserRepo";
 
-const defaultSchema = [{ key: "proj", value: 0 }, { key: "exp", value: 0 }];
+const defaultSchema = [
+  { key: "proj", value: 0 },
+  { key: "exp", value: 0 },
+  { key: "user", value: 0 },
+];
 
 export const initStatRepo = async () => {
   await forEachAsync(defaultSchema, async ({ key, value }) => {

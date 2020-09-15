@@ -1,18 +1,40 @@
-import { ExperimentRepo, ProjectRepo, RecordRepo } from "../../database";
+import {
+  ExperimentRepo,
+  ProjectRepo,
+  RecordRepo,
+  UserRepo,
+} from "../../database";
+
+import { errorRes } from "../../utils";
+import { errorDict } from "../../configs/errorDict";
+import { forEachAsync } from "../../utils/forEachAsync";
 
 export const getAllProject = async (req, res, next) => {
   try {
-    const projs = await ProjectRepo.query({
-      isDeleted: false,
-      isDestroyed: false,
-    });
+    const { id } = res.locals;
+    const user = await UserRepo.queryById(id);
+    if (!user) {
+      return next(errorRes(errorDict.NO_SUCH_USER, "error"));
+    }
 
-    const data = projs.map(({ lastUpdateTime, lastUseTime, _id, title }) => ({
-      _id,
-      title,
-      lastUpdate: lastUpdateTime,
-      lastUse: lastUseTime,
-    }));
+    const { projects } = user;
+
+    const data = [];
+    await forEachAsync(projects, async projID => {
+      const proj = await ProjectRepo.queryById(projID);
+      if (proj) {
+        const { isDeleted, isDestroyed } = proj;
+        if (!isDeleted && !isDestroyed) {
+          const { lastUpdateTime, lastUseTime, _id, title } = proj;
+          data.push({
+            _id,
+            title,
+            lastUpdate: lastUpdateTime,
+            lastUse: lastUseTime,
+          });
+        }
+      }
+    });
 
     res.json({ data, type: "success" });
   } catch (error) {

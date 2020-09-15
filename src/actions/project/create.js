@@ -1,7 +1,15 @@
-import { ProjectRepo, CounterRepo } from "../../database";
+import { ProjectRepo, CounterRepo, UserRepo } from "../../database";
+import { errorRes } from "../../utils";
+import { errorDict } from "../../configs/errorDict";
 
 export const createProject = async (req, res, next) => {
   try {
+    const { id } = res.locals;
+    const user = await UserRepo.queryById(id);
+    if (!user) {
+      return next(errorRes(errorDict.NO_SUCH_USER, "error"));
+    }
+
     const { title, appendix, fields } = req.body;
 
     const timestamp = Date.now();
@@ -18,6 +26,8 @@ export const createProject = async (req, res, next) => {
       fields: fieldsFixed,
     });
     await CounterRepo.update({ key: "proj" }, { $inc: { value: 1 } });
+    await UserRepo.pushById(id, { pushById: newProject._id });
+
     res.json({ data: { _id: newProject._id }, type: "success" });
   } catch (error) {
     return next(error);

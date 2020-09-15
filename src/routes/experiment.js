@@ -11,6 +11,9 @@ import { jwtChecker } from "../middlewares/authorization";
 
 const router = Router();
 
+// 在运行端提交结果，不需要检查JWT
+router.post("/submit/:expID", sumbitExpData);
+
 router.use(jwtChecker);
 
 // 获得一个实验的信息
@@ -21,9 +24,6 @@ router.delete("/delete/:expID", deleteExpRow);
 
 // 在运行端注册一个实验
 router.get("/register/:projID", registerExp);
-
-// 在运行端提交结果
-router.post("/submit/:expID", sumbitExpData);
 
 // 从回收站回复
 // router.get("/restore/:expID", restoreFromTrash);
