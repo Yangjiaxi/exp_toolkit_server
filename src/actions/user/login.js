@@ -12,8 +12,8 @@ export const userLogin = async (req, res, next) => {
       const { msg } = errors.array({ onlyFirstError: true })[0];
       return next(errorRes(msg, "error"));
     }
-    const { email, password } = req.body;
-    const user = (await UserRepo.query({ email }))[0];
+    const { username, password } = req.body;
+    const user = (await UserRepo.query({ username }))[0];
     if (!user) {
       return next(errorRes(errorDict.BAD_LOGIN, "error"));
     }
@@ -33,7 +33,7 @@ export const userLogin = async (req, res, next) => {
 };
 
 export const handleLoginVerify = [
-  body("email")
+  body("username")
     .isString()
     .withMessage(errorDict.BAD_LOGIN),
   body("password")

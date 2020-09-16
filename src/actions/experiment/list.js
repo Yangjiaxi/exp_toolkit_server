@@ -3,7 +3,6 @@ import { ExperimentRepo, ProjectRepo, RecordRepo } from "../../database";
 export const getExpInfo = async (req, res, next) => {
   try {
     const { expID } = req.params;
-    console.log(`get ${expID}`);
 
     const { record, projectID, createTime } = await ExperimentRepo.queryById(
       expID,

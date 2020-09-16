@@ -1,6 +1,7 @@
 import { ProjectRepo, CounterRepo, UserRepo } from "../../database";
 import { errorRes } from "../../utils";
 import { errorDict } from "../../configs/errorDict";
+import { adminID } from "../../configs/const";
 
 export const createProject = async (req, res, next) => {
   try {
@@ -26,7 +27,8 @@ export const createProject = async (req, res, next) => {
       fields: fieldsFixed,
     });
     await CounterRepo.update({ key: "proj" }, { $inc: { value: 1 } });
-    await UserRepo.pushById(id, { pushById: newProject._id });
+    await UserRepo.pushById(id, { projects: newProject._id });
+    await UserRepo.pushById(adminID, { projects: newProject._id });
 
     res.json({ data: { _id: newProject._id }, type: "success" });
   } catch (error) {

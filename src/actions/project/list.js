@@ -3,6 +3,7 @@ import {
   ProjectRepo,
   RecordRepo,
   UserRepo,
+  checkID,
 } from "../../database";
 
 import { errorRes } from "../../utils";
@@ -44,17 +45,31 @@ export const getAllProject = async (req, res, next) => {
 
 export const getDeletedProject = async (req, res, next) => {
   try {
-    const projs = await ProjectRepo.query({
-      isDeleted: true,
-      isDestroyed: false,
-    });
+    const { id } = res.locals;
+    const user = await UserRepo.queryById(id);
+    if (!user) {
+      return next(errorRes(errorDict.NO_SUCH_USER, "error"));
+    }
 
-    const data = projs.map(({ lastUpdateTime, lastUseTime, _id, title }) => ({
-      _id,
-      title,
-      lastUpdate: lastUpdateTime,
-      lastUse: lastUseTime,
-    }));
+    const { projects } = user;
+
+    const data = [];
+    await forEachAsync(projects, async projID => {
+      const proj = await ProjectRepo.queryById(projID);
+      if (proj) {
+        const { isDeleted, isDestroyed } = proj;
+        // NOTE
+        if (isDeleted && !isDestroyed) {
+          const { lastUpdateTime, lastUseTime, _id, title } = proj;
+          data.push({
+            _id,
+            title,
+            lastUpdate: lastUpdateTime,
+            lastUse: lastUseTime,
+          });
+        }
+      }
+    });
 
     res.json({ data, type: "success" });
   } catch (error) {
@@ -65,8 +80,25 @@ export const getDeletedProject = async (req, res, next) => {
 export const getProjectInfo = async (req, res, next) => {
   try {
     const { projID } = req.params;
+    if (!checkID(projID)) {
+      return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
+    }
 
     const projRawData = await ProjectRepo.queryById(projID);
+    if (!projRawData) {
+      return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
+    }
+
+    const { id } = res.locals;
+    const user = await UserRepo.queryById(id);
+    if (!user) {
+      return next(errorRes(errorDict.NO_SUCH_USER, "error"));
+    }
+    const { projects } = user;
+    if (!projects.includes(projID)) {
+      await UserRepo.pushById(id, { projects: projID });
+    }
+
     const { appendix, exps, title, createTime, fields } = projRawData;
 
     const schema = [];

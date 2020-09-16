@@ -36,3 +36,5 @@ export const initStatRepo = async () => {
     }
   });
 };
+
+export const checkID = id => mongoose.Types.ObjectId.isValid(id);

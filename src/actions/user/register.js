@@ -43,7 +43,7 @@ export const userRegister = async (req, res, next) => {
 export const userRegisterVerify = [
   body("username")
     .isString()
-    .isLength({ min: 6 })
+    .isLength({ min: 3 })
     .withMessage("Username too short."),
   body("email")
     .isEmail()
