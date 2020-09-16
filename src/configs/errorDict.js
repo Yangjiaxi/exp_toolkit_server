@@ -9,6 +9,8 @@ export const errorDict = {
   BAD_LOGIN: "Incorrect username or password.",
   // ----------[proj]----------
   NO_SUCH_PROJ: "No such project or permission not allowed.",
+  // ----------[proj]----------
+  NO_SUCH_EXP: "No such experiment or permission not allowed.",
   // ----------[change pwd]----------
   BAD_OLD_PWD: "Incorrect password.",
   BAD_PWD: "Too short password.",

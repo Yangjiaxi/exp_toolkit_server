@@ -39,6 +39,11 @@ export const createProject = async (req, res, next) => {
 export const modifyProject = async (req, res, next) => {
   try {
     const { projID } = req.params;
+    const proj = await ProjectRepo.queryById(projID);
+    if (!proj) {
+      return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
+    }
+
     const { title, appendix, fields } = req.body;
     await ProjectRepo.updateById(projID, { title, appendix, fields });
     res.json({ type: "success" });

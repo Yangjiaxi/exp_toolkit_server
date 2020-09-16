@@ -1,13 +1,15 @@
+import { errorDict } from "../../configs/errorDict";
 import { ExperimentRepo, ProjectRepo, RecordRepo } from "../../database";
+import { errorRes } from "../../utils";
 
 export const getExpInfo = async (req, res, next) => {
   try {
     const { expID } = req.params;
-
-    const { record, projectID, createTime } = await ExperimentRepo.queryById(
-      expID,
-    );
-
+    const exp = await ExperimentRepo.queryById(expID);
+    if (!exp) {
+      return next(errorRes(errorDict.NO_SUCH_EXP, "error"));
+    }
+    const { record, projectID, createTime } = exp;
     const { fields, title } = await ProjectRepo.queryById(projectID);
 
     const schema = [];

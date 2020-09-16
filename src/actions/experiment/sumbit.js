@@ -1,4 +1,3 @@
-import { json } from "express";
 import { ExperimentRepo, RecordRepo, ProjectRepo } from "../../database";
 
 export const registerExp = async (req, res, next) => {

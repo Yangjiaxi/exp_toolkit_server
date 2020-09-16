@@ -162,6 +162,9 @@ export const getProjectConf = async (req, res, next) => {
     const { projID } = req.params;
 
     const projRawData = await ProjectRepo.queryById(projID);
+    if (!projRawData) {
+      return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
+    }
     const { appendix, title, fields } = projRawData;
 
     const data = {
