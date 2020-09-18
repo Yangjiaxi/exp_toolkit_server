@@ -60,12 +60,11 @@ export const getDeletedProject = async (req, res, next) => {
         const { isDeleted, isDestroyed } = proj;
         // NOTE
         if (isDeleted && !isDestroyed) {
-          const { lastUpdateTime, lastUseTime, _id, title } = proj;
+          const { deleteTime, _id, title } = proj;
           data.push({
             _id,
             title,
-            lastUpdate: lastUpdateTime,
-            lastUse: lastUseTime,
+            deleteTime,
           });
         }
       }
@@ -142,6 +141,8 @@ export const getProjectInfo = async (req, res, next) => {
         };
       }),
     );
+
+    await ProjectRepo.updateById(projID, { lastUseTime: Date.now() });
 
     const data = {
       schema,

@@ -8,6 +8,7 @@ import {
   createProject,
   getProjectConf,
   modifyProject,
+  restoreFromTrash,
 } from "../actions/project";
 
 import { jwtChecker } from "../middlewares/authorization";
@@ -37,7 +38,7 @@ router.get("/conf/:projID", getProjectConf);
 router.delete("/delete/:projID", moveToTrash);
 
 // 从回收站回复
-// router.get("/restore/:projID", restoreFromTrash);
+router.get("/restore/:projID", restoreFromTrash);
 
 // 销毁项目
 // router.delete("/destroy/:projID", deleteForever);

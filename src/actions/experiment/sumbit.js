@@ -9,6 +9,7 @@ export const registerExp = async (req, res, next) => {
     });
 
     await ProjectRepo.pushById(projectID, { exps: exp._id });
+    await ProjectRepo.updateById(projectID, { lastUpdateTime: Date.now() });
 
     res.json({ data: { _id: exp._id }, type: "success" });
   } catch (error) {
@@ -36,8 +37,10 @@ export const sumbitExpData = async (req, res, next) => {
       data: kvList,
     });
 
+    const { projectID } = await ExperimentRepo.queryById(expID);
     await ExperimentRepo.pushById(expID, { record: record._id });
     await ExperimentRepo.updateById(expID, { lastUpdateTime: time });
+    await ProjectRepo.updateById(projectID, { lastUpdateTime: time });
 
     res.json({ type: "success" });
   } catch (error) {

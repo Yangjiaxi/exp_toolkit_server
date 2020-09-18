@@ -4,5 +4,5 @@ export {
   getDeletedProject,
   getProjectConf,
 } from "./list";
-export { moveToTrash, deleteForever } from "./delete";
+export { moveToTrash, deleteForever, restoreFromTrash } from "./delete";
 export { createProject, modifyProject } from "./create";

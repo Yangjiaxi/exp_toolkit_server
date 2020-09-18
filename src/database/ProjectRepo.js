@@ -20,6 +20,10 @@ const projectSchema = createSchema({
     type: Number,
     default: null,
   },
+  deleteTime: {
+    type: Number,
+    default: null,
+  },
   appendix: {
     type: String,
     default: "",

@@ -10,7 +10,10 @@ export const moveToTrash = async (req, res, next) => {
       return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
     }
 
-    await ProjectRepo.updateById(projID, { isDeleted: true });
+    await ProjectRepo.updateById(projID, {
+      isDeleted: true,
+      deleteTime: Date.now(),
+    });
     res.json({ type: "success" });
   } catch (error) {
     return next(error);
@@ -39,7 +42,10 @@ export const restoreFromTrash = async (req, res, next) => {
     if (!proj) {
       return next(errorRes(errorDict.NO_SUCH_PROJ, "error"));
     }
-    await ProjectRepo.updateById(projID, { isDeleted: false });
+    await ProjectRepo.updateById(projID, {
+      isDeleted: false,
+      lastUseTime: Date.now(),
+    });
     res.json({ type: "success" });
   } catch (error) {
     return next(error);
