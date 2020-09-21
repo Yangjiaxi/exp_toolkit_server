@@ -1,7 +1,7 @@
 import express from "express";
+import https from "https";
 import http from "http";
-// import https from "https";
-// import fs from "fs";
+import fs from "fs";
 
 import { jsonParser, urlencodedParser } from "./middlewares/bodyParser";
 import { cors } from "./middlewares/cors";
@@ -26,16 +26,20 @@ app.use(routes);
 app.use(noMatch);
 app.use(errorHandler);
 
-// const server = https.createServer(
-//   {
-//     key: fs.readFileSync("keys/api-doc.key"),
-//     cert: fs.readFileSync("keys/api-doc.pem"),
-//   },
-//   app,
-// );
-
-const server = http.createServer(app);
-
-server.listen(PORT, tasks);
+if (process.env.NODE_ENV === "development") {
+  logger.info("Depoly on [development] mode.");
+  const server = http.createServer(app);
+  server.listen(PORT, tasks);
+} else {
+  logger.info("Depoly on [production] mode.");
+  const server = https.createServer(
+    {
+      key: fs.readFileSync("keys/api-exp.key"),
+      cert: fs.readFileSync("keys/api-exp.pem"),
+    },
+    app,
+  );
+  server.listen(PORT, tasks);
+}
 
 logger.info(`Server started, listening at port ${PORT}`);
