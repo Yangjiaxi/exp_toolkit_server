@@ -100,6 +100,8 @@ export const getProjectInfo = async (req, res, next) => {
 
     const { appendix, exps, title, createTime, fields } = projRawData;
 
+    console.log(exps);
+
     const schema = [];
     const filter = [];
     const schemaMapping = {};
