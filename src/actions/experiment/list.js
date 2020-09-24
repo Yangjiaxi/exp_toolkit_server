@@ -9,7 +9,7 @@ export const getExpInfo = async (req, res, next) => {
     if (!exp) {
       return next(errorRes(errorDict.NO_SUCH_EXP, "error"));
     }
-    const { record, projectID, createTime } = exp;
+    const { record, projectID, createTime, comment } = exp;
     const { fields, title } = await ProjectRepo.queryById(projectID);
 
     const schema = [];
@@ -39,6 +39,7 @@ export const getExpInfo = async (req, res, next) => {
       schema,
       data: expData,
       createTime,
+      comment,
       projectID,
       title,
     };

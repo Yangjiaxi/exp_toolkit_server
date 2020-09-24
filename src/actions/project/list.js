@@ -100,8 +100,6 @@ export const getProjectInfo = async (req, res, next) => {
 
     const { appendix, exps, title, createTime, fields } = projRawData;
 
-    console.log(exps);
-
     const schema = [];
     const filter = [];
     const schemaMapping = {};
@@ -118,10 +116,11 @@ export const getProjectInfo = async (req, res, next) => {
     );
 
     const expData = await Promise.all(
-      expDataRaw.map(async ({ _id, record }) => {
+      expDataRaw.map(async ({ _id, record, comment }) => {
         if (record === undefined || record.length === 0)
           return {
             _id,
+            comment,
             datas: [],
           };
 
@@ -138,6 +137,7 @@ export const getProjectInfo = async (req, res, next) => {
         });
         return {
           _id,
+          comment,
           lastUpdate: createTimeRecord,
           datas,
         };

@@ -15,6 +15,10 @@ const experimentSchema = createSchema({
     type: Number,
     default: null,
   },
+  comment: {
+    type: String,
+    default: "null",
+  },
   record: {
     // a list of `recordSchema` in `RecodeRepo`
     type: [Schema.Types.ObjectId],

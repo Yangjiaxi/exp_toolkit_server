@@ -15,7 +15,7 @@ const router = Router();
 router.post("/submit/:expID", sumbitExpData);
 
 // 在运行端注册一个实验，不需要检查JWT
-router.get("/register/:projID", registerExp);
+router.post("/register/:projID", registerExp);
 
 router.use(jwtChecker);
 
