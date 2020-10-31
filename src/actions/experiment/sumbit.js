@@ -4,7 +4,6 @@ export const registerExp = async (req, res, next) => {
   try {
     const { projID: projectID } = req.params;
     const { comment } = req.body;
-    console.log(comment);
 
     const exp = await ExperimentRepo.createAndInsert({
       projectID,
