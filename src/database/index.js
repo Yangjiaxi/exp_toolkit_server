@@ -6,10 +6,11 @@ import { CounterRepo } from "./CounterRepo";
 
 const { connect } = mongoose;
 
-connect(
-  dbURI,
-  { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false },
-)
+connect(dbURI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useFindAndModify: false,
+})
   .then(() => logger.info("Connected to MongoDB"))
   .catch(err => logger.error(err.message));
 

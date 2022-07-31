@@ -27,11 +27,11 @@ app.use(noMatch);
 app.use(errorHandler);
 
 if (process.env.NODE_ENV === "development") {
-  logger.info("Depoly on [development] mode.");
+  logger.info("Deploy on [development] mode.");
   const server = http.createServer(app);
   server.listen(PORT, tasks);
 } else {
-  logger.info("Depoly on [production] mode.");
+  logger.info("Deploy on [production] mode.");
   const server = https.createServer(
     {
       key: fs.readFileSync("keys/api-exp.key"),
